@@ -1,0 +1,93 @@
+
+#!text
+#:kivy 1.7.2
+#:import Factory kivy.factory.Factory
+
+#:set color_button (0.09, 0.6, 1, 0.99)
+#:set color_button_pressed (0.09, 0.6, 1, .99)  # darker brown
+#:set color_font   (1, 1, 1, 1)  # off white
+
+<MySpinnerOption@SpinnerOption>:
+    background_color: color_button if self.state == 'down' else color_button_pressed
+    color: color_font
+    spacing: 10
+
+<MainLayout>
+    spacing: 15
+    orientation: 'vertical'
+    padding: 20
+#    on_key_up: root._key_up(*args)
+    Spinner:
+        id: head_spinner
+        text: 'Robotic Polyglot'
+        values: 'Robotic Polyglot', 'Google Translate', 'My Memory', 'Pons', 'Linguee'
+        size_hint: 1., .20
+        background_color: color_button if self.state == 'normal' else color_button_pressed
+        color: color_font
+        font_size: dp(30)
+        option_cls: Factory.get("MySpinnerOption")
+
+
+    TextInput:
+        id: payload
+        hint_text: "Text..."
+        focus: True
+        use_bubble: True
+        multiline: False
+        size_hint: 1., .20
+        font_size: dp(30)
+        background_color: 0.14, 0.14, 0.14, 1
+        foreground_color: (1, 1, 1, 1)
+        on_text_validate: result_label.text = root.translate(translator=head_spinner.text, source=from_spinner.text, target=to_spinner.text, text=payload.text)
+    BoxLayout:
+        spacing: 5
+        size_hint: 1., .15
+        Spinner:
+            id: from_spinner
+            text: 'english'
+            # text: 'auto' if head_spinner.text in ['Google Translate', 'My Memory'] else 'french'
+            values: root.get_supported_languages(translator=head_spinner.text, source="all", auto_included=True)
+            # background_color: 0, 0, 1, .7
+            background_color: color_button if self.state == 'normal' else color_button_pressed
+            color: color_font
+            font_size: dp(20)
+            option_cls: Factory.get("MySpinnerOption")
+        Button:
+            id: dictate_btn
+            text: 'Speak'
+#            background_color: 0, 0, 1, .7
+            background_color: color_button if self.state == 'normal' else color_button_pressed
+            color: color_font
+            font_size: dp(20)
+            on_release: payload.text = root.dictate(language=from_spinner.text)
+
+
+        Spinner:
+            id: to_spinner
+            # text: 'english'
+            text: 'french'
+            values: root.get_supported_languages(translator=head_spinner.text, source=from_spinner.text)
+#            background_color: 0, 0, 1, .7
+            background_color: color_button if self.state == 'normal' else color_button_pressed
+            color: color_font
+            font_size: dp(20)
+            option_cls: Factory.get("MySpinnerOption")
+#        Button:
+#            id: translate_btn
+#            text: 'translate'
+##            background_color: 0, 0, 1, .7
+#            background_color: color_button if self.state == 'normal' else color_button_pressed
+#            color: color_font
+#            font_size: dp(20)
+#            on_release: result_label.text = root.translate(translator=head_spinner.text, source=from_spinner.text, target=to_spinner.text, text=payload.text)
+
+    ScrollView:
+        Label:
+            id: result_label
+            font_size: dp(50)
+            pos_hint_x: 0.3
+            size_hint_y: None
+            height: self.texture_size[1]
+            text_size: self.width, None
+            # font_name: 'arial-unicode-ms.ttf' # 'arial'
+            background_color: color_button
