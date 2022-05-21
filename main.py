@@ -9,7 +9,7 @@ import speech_recognition as sr
 # import pyttsx3
 #import pyaudio
 
-__version__ = "1.0.0"
+__version__ = "0.1.0"
 
 
 # Detect Source Language
