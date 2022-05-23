@@ -1,15 +1,15 @@
-
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from deep_translator import GoogleTranslator, PonsTranslator, LingueeTranslator, MyMemoryTranslator
 
 import requests
+import json
 
-import speech_recognition as sr
+# import speech_recognition as sr
 # import pyttsx3
 #import pyaudio
 
-__version__ = "0.1.0"
+__version__ = "0.1.6"
 
 
 # Detect Source Language
@@ -146,27 +146,42 @@ class MainLayout(BoxLayout):
     def get_supported_languages(translator='Robotic Polyglot', source='all', auto_included=False, *args):
 
         # if translator == 'Google Translate' or translator == 'My Memory':
-        if translator == 'Google Translate' or translator == 'My Memory' : #or translator == 'Robotic Polyglot':
-            supported_languages = GoogleTranslator.supported_languages
+        if translator == 'Google Translate' or translator == 'My Memory' \
+                or translator == 'Pons' or translator == 'Linguee' : #or translator == 'Robotic Polyglot':
+            # supported_languages = GoogleTranslator.supported_languages
+            supported_languages = LANGUAGE_LANGS_CODES
             if auto_included and not MainLayout.auto_inserted:
-                supported_languages.insert(0, 'auto')
+                # supported_languages.insert(0, 'auto')
                 MainLayout.auto_inserted = True
 
-        elif translator == 'Pons':
-            supported_languages = PonsTranslator.supported_languages
-
-        elif translator == 'Linguee':
-            supported_languages = LingueeTranslator.supported_languages
+        # elif translator == 'Pons':
+        #     supported_languages = PonsTranslator.supported_languages
+        #
+        # elif translator == 'Linguee':
+        #     supported_languages = LingueeTranslator.supported_languages
 
         elif translator == 'Robotic Polyglot':
             # res = RoboticPolyglot(source=source, target=target).translate(input=text)
             # http://mt.steve3p0.com/languages?source=all
 
-            url = "http://mt.steve3p0.com/languages"
+            if source != 'all':
+                #source = source.lower()
+                source = LANGUAGE_LANGS_CODES[source.lower()]
+                # source = next(key for key, value in LANGUAGE_CODES_LANGS.items() if value.lower() == source)
+
+            url = "http://mt.roboticpolyglot.com/languages"
             params = {}
             params['source'] = source
+            # res = requests.get(url=url, params=params).text
             res = requests.get(url=url, params=params).text
-            supported_languages = res
+            robotic_languages = json.loads(res)
+
+            supported_languages = []
+            for dic in robotic_languages:
+                name = dic['Name']
+                supported_languages.append(name)
+
+            supported_languages
         else:
             return ""
             # raise Exception("You need to choose a translator")
@@ -176,6 +191,7 @@ class MainLayout(BoxLayout):
     @staticmethod
     def dictate(language, *args):
 
+        import speech_recognition as sr
         r = sr.Recognizer()
         with sr.Microphone() as source:
             # wait for a second to let the recognizer
@@ -195,6 +211,9 @@ class MainLayout(BoxLayout):
 
     @staticmethod
     def translate(translator, source, target, text, *args):
+
+        source = source.lower()
+        target = target.lower()
 
         if not text:
             return 'provide a text to translate'
@@ -222,8 +241,11 @@ class MainLayout(BoxLayout):
                 # res = RoboticPolyglot(source=source, target=target).translate(input=text)
                 # http://mt.steve3p0.com/translate?source=en&target=fr&input='I am a robot that speaks many languages'
 
-                src_lang = LANGUAGE_LANGS_CODES[source]
-                tgt_lang = LANGUAGE_LANGS_CODES[target]
+                src_lang = LANGUAGE_LANGS_CODES[source.lower()]
+                if target == 'Chinese':
+                    tgt_lang = 'zh'
+                else:
+                    tgt_lang = LANGUAGE_LANGS_CODES[target.lower()]
                 url = "http://mt.steve3p0.com/translate"
                 params = {}
                 params['source'] = src_lang

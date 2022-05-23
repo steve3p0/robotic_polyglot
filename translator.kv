@@ -44,7 +44,7 @@
         size_hint: 1., .15
         Spinner:
             id: from_spinner
-            text: 'english'
+            text: 'English'
             # text: 'auto' if head_spinner.text in ['Google Translate', 'My Memory'] else 'french'
             values: root.get_supported_languages(translator=head_spinner.text, source="all", auto_included=True)
             # background_color: 0, 0, 1, .7
@@ -65,7 +65,7 @@
         Spinner:
             id: to_spinner
             # text: 'english'
-            text: 'french'
+            text: 'French'
             values: root.get_supported_languages(translator=head_spinner.text, source=from_spinner.text)
 #            background_color: 0, 0, 1, .7
             background_color: color_button if self.state == 'normal' else color_button_pressed
@@ -89,5 +89,5 @@
             size_hint_y: None
             height: self.texture_size[1]
             text_size: self.width, None
-            # font_name: 'arial-unicode-ms.ttf' # 'arial'
+            font_name: 'arial-unicode-ms.ttf' # 'arial'
             background_color: color_button

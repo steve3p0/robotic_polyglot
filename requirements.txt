@@ -1,0 +1,55 @@
+# Cython Requirements
+Cython==0.29.30
+
+# Kivy Requirements
+#Kivy-Garden==0.1.5
+Kivy-Garden==0.1.4
+Kivy==2.1.0
+
+# Making http requests to MT API Server
+requests==2.27.1
+
+# deep-translator for backend translation
+deep-translator==1.8.3
+# deep-translator==1.0.3
+
+#certifi==2021.10.8
+
+# Speech Recognition
+# PyAudio==0.2.11
+# SpeechRecognition==3.8.1
+
+# # Not yet added (but auto generated)
+# beautifulsoup4==4.11.1
+# certifi==2022.5.18.1
+# charset-normalizer==2.0.12
+# Cython==0.29.30
+# docutils==0.18.1
+# idna==3.3
+# pip==21.3.1
+# Pygments==2.12.0
+# setuptools==60.2.0
+# soupsieve==2.3.2.post1
+# urllib3==1.26.9
+# wheel==0.37.1
+
+
+# # All original auto-generated requirements
+# beautifulsoup4==4.11.1
+# certifi==2022.5.18.1
+# charset-normalizer==2.0.12
+# Cython==0.29.30
+# deep-translator==1.8.3
+# docutils==0.18.1
+# idna==3.3
+# Kivy-Garden==0.1.5
+# Kivy==2.1.0
+# pip==21.3.1
+# PyAudio==0.2.11
+# Pygments==2.12.0
+# requests==2.27.1
+# setuptools==60.2.0
+# soupsieve==2.3.2.post1
+# SpeechRecognition==3.8.1
+# urllib3==1.26.9
+# wheel==0.37.1
