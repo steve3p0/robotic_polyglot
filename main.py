@@ -1,28 +1,30 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
+# from kivy.properties import ObjectProperty
+# from android.permissions import request_permissions, Permission
+
 from deep_translator import GoogleTranslator, PonsTranslator, LingueeTranslator, MyMemoryTranslator
+
 
 import requests
 import json
 
-# import speech_recognition as sr
-# import pyttsx3
-#import pyaudio
+from plyer import stt
 
-__version__ = "0.1.7"
+__version__ = "0.1.9"
 
 
 # Detect Source Language
-# http://mt.steve3p0.com/detect?input='This is English'
+# http://mt.roboticpolyglot.com/detect?input='This is English'
 
 # Get Source Languages
-# http://mt.steve3p0.com/languages?source=all
+# http://mt.roboticpolyglot.com/languages?source=all
 
 # Get Target Language (based on source)
-# http://mt.steve3p0.com/languages?source=en
+# http://mt.roboticpolyglot.com/languages?source=en
 
 # Translate
-# http://mt.steve3p0.com/translate?source=en&target=fr&input='I am a robot that speaks many languages'
+# http://mt.roboticpolyglot.com/translate?source=en&target=fr&input='I am a robot that speaks many languages'
 
 
 LANGUAGE_CODES_LANGS = \
@@ -141,11 +143,11 @@ LANGUAGE_LANGS_CODES = {v: k for k, v in LANGUAGE_CODES_LANGS.items()}
 class MainLayout(BoxLayout):
 
     auto_inserted = False
+    # dictate_btn = ObjectProperty()
 
     @staticmethod
     def get_supported_languages(translator='Robotic Polyglot', source='all', auto_included=False, *args):
 
-        # if translator == 'Google Translate' or translator == 'My Memory':
         if translator == 'Google Translate' or translator == 'My Memory' \
                 or translator == 'Pons' or translator == 'Linguee' : #or translator == 'Robotic Polyglot':
             # supported_languages = GoogleTranslator.supported_languages
@@ -162,7 +164,7 @@ class MainLayout(BoxLayout):
 
         elif translator == 'Robotic Polyglot':
             # res = RoboticPolyglot(source=source, target=target).translate(input=text)
-            # http://mt.steve3p0.com/languages?source=all
+            # http://mt.roboticpolyglot.com/languages?source=all
 
             if source != 'all':
                 #source = source.lower()
@@ -190,7 +192,6 @@ class MainLayout(BoxLayout):
 
     @staticmethod
     def dictate(language, *args):
-
         import speech_recognition as sr
         r = sr.Recognizer()
         with sr.Microphone() as source:
@@ -239,14 +240,14 @@ class MainLayout(BoxLayout):
 
             elif translator == 'Robotic Polyglot':
                 # res = RoboticPolyglot(source=source, target=target).translate(input=text)
-                # http://mt.steve3p0.com/translate?source=en&target=fr&input='I am a robot that speaks many languages'
+                # http://mt.roboticpolyglot.com/translate?source=en&target=fr&input='I am a robot that speaks many languages'
 
                 src_lang = LANGUAGE_LANGS_CODES[source]
                 if target == 'chinese':
                     tgt_lang = 'zh'
                 else:
                     tgt_lang = LANGUAGE_LANGS_CODES[target]
-                url = "http://mt.steve3p0.com/translate"
+                url = "http://mt.roboticpolyglot.com/translate"
                 params = {}
                 params['source'] = src_lang
                 params['target'] = tgt_lang
@@ -257,26 +258,10 @@ class MainLayout(BoxLayout):
                 return "you need to choose a translator"
 
             # return "No translation is provided" if not res else res
-
             if not res:
                 "No translation is provided"
             else:
-                # from plyer import tts
-                # tts.speak(res)
-
-                # # https://www.geeksforgeeks.org/python-convert-speech-to-text-and-text-to-speech/
-                # engine = pyttsx3.init()
-
-                # # change_voice(engine, "nl_BE", "VoiceGenderFemale")
-                # # https://stackoverflow.com/questions/65977155/change-pyttsx3-language
-                # engine.say(res)
-                # engine.runAndWait()
-
                 return res
-
-        # from plyer import tts
-        # tts.speak('hello, will you please tell me the port')
-
         except Exception as e:
             print(e.args)
             return "No translation is provided"
@@ -285,16 +270,7 @@ class MainLayout(BoxLayout):
 class TranslatorApp(App):
 
     def build(self):
-        # Window.clearcolor = (0.5, 0, 1, 1)
-        # Window.size = (700, 500)
-        # Window.minimum_width, Window.minimum_height = Window.size
         return MainLayout()
-
-    # def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
-    #     if keycode[1] == 'enter':
-    #         self.
-    #         keyboard.release()
-    #         self.dismiss()
 
 
 if __name__ == '__main__':

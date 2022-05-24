@@ -36,7 +36,7 @@ version.filename = %(source.dir)s/main.py
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = hostpython3==3.7.8,python3==3.7.8,kivy==1.11.1, beautifulsoup4, bs4, certifi,chardet,docutils, future, idna, Kivy-Garden, Pygments, requests, six, soupsieve, urllib3, deep-translator==1.0.5
+requirements = hostpython3==3.7.8,python3==3.7.8,kivy==1.11.1, beautifulsoup4, bs4, certifi,chardet,docutils, future, idna, Kivy-Garden, Pygments, requests, six, soupsieve, urllib3, deep-translator==1.0.5, android, plyer
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -85,7 +85,7 @@ fullscreen = 0
 #android.presplash_color = #FFFFFF
 
 # (list) Permissions
-android.permissions = INTERNET
+android.permissions = INTERNET, RECORD_AUDIO, READ_EXTERNAL_STORAGE
 
 # (int) Target Android API, should be as high as possible.
 android.api = 29

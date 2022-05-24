@@ -55,31 +55,20 @@
         Button:
             id: dictate_btn
             text: 'Speak'
-#            background_color: 0, 0, 1, .7
+            # background_color: 0, 0, 1, .7
             background_color: color_button if self.state == 'normal' else color_button_pressed
             color: color_font
             font_size: dp(20)
             on_release: payload.text = root.dictate(language=from_spinner.text)
-
-
         Spinner:
             id: to_spinner
-            # text: 'english'
-            text: 'French'
+            text: 'Spanish'
             values: root.get_supported_languages(translator=head_spinner.text, source=from_spinner.text)
-#            background_color: 0, 0, 1, .7
+            # background_color: 0, 0, 1, .7
             background_color: color_button if self.state == 'normal' else color_button_pressed
             color: color_font
             font_size: dp(20)
             option_cls: Factory.get("MySpinnerOption")
-#        Button:
-#            id: translate_btn
-#            text: 'translate'
-##            background_color: 0, 0, 1, .7
-#            background_color: color_button if self.state == 'normal' else color_button_pressed
-#            color: color_font
-#            font_size: dp(20)
-#            on_release: result_label.text = root.translate(translator=head_spinner.text, source=from_spinner.text, target=to_spinner.text, text=payload.text)
 
     ScrollView:
         Label:
