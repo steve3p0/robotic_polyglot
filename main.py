@@ -241,11 +241,11 @@ class MainLayout(BoxLayout):
                 # res = RoboticPolyglot(source=source, target=target).translate(input=text)
                 # http://mt.steve3p0.com/translate?source=en&target=fr&input='I am a robot that speaks many languages'
 
-                src_lang = LANGUAGE_LANGS_CODES[source.lower()]
+                src_lang = LANGUAGE_LANGS_CODES[source]
                 if target == 'chinese':
                     tgt_lang = 'zh'
                 else:
-                    tgt_lang = LANGUAGE_LANGS_CODES[target.lower()]
+                    tgt_lang = LANGUAGE_LANGS_CODES[target]
                 url = "http://mt.steve3p0.com/translate"
                 params = {}
                 params['source'] = src_lang
