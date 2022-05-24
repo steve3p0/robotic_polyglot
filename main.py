@@ -9,7 +9,7 @@ import json
 # import pyttsx3
 #import pyaudio
 
-__version__ = "0.1.6"
+__version__ = "0.1.7"
 
 
 # Detect Source Language
@@ -242,7 +242,7 @@ class MainLayout(BoxLayout):
                 # http://mt.steve3p0.com/translate?source=en&target=fr&input='I am a robot that speaks many languages'
 
                 src_lang = LANGUAGE_LANGS_CODES[source.lower()]
-                if target == 'Chinese':
+                if target == 'chinese':
                     tgt_lang = 'zh'
                 else:
                     tgt_lang = LANGUAGE_LANGS_CODES[target.lower()]
