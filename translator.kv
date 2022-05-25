@@ -52,16 +52,19 @@
         option_cls: Factory.get("MySpinnerOption")
 
 
-    TextInput:
+    MyTextInput:
         id: payload
         hint_text: "Text..."
         focus: True
         use_bubble: True
-        multiline: False
+        do_wrap: True
+        multiline: True
         size_hint: 1., .20
         font_size: dp(30)
         background_color: (.75, .75, .78, 1)
         foreground_color: (0, 0, 0, 1)
+        # keyboard_on_key_down: root._on_key_down
+        # keyboard_on_key_down: root.translate_new()
         on_text_validate: root.translate(translator=head_spinner.text, source=from_spinner.text, target=to_spinner.text, text=payload.text)
     BoxLayout:
         spacing: 5

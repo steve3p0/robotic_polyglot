@@ -2,8 +2,11 @@ from kivy.app import App
 from kivy.core.window import Window
 from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.textinput import TextInput
 from kivy.properties import ObjectProperty
 # from android.permissions import request_permissions, Permission
+
+import sys, os
 
 from deep_translator import GoogleTranslator, PonsTranslator, LingueeTranslator, MyMemoryTranslator
 
@@ -153,6 +156,10 @@ class MainLayout(BoxLayout):
     to_spinner = ObjectProperty(None)
     result_label = ObjectProperty(None)
 
+    # def __init__(self, **kwargs):
+    #      self.payload.bind(on_key_down)
+
+
     @staticmethod
     def get_supported_languages(translator='Robotic Polyglot', source='all', auto_included=False, *args):
 
@@ -222,40 +229,42 @@ class MainLayout(BoxLayout):
     # def dictate(language, *args):
     def dictate(self, language, *args):
 
-        try:
-            self.payload.text = "Fuck you steve"
-        except Exception as ex:
-            return ex
+        # try:
+        #     self.payload.text = "Fuck you steve"
+        # except Exception as ex:
+        #     return ex
 
         #return "returned!!!!"
         # return "shit"
 
-        # if stt.listening:
-            #self.stop_listening()
-            # stt.stop()
-            # start_button = self.dictate_btn
-            # start_button.text = 'Speak'
-            # self.payload.text = '\n'.join(stt.partial_results)
-            # self.payload.text = '\n'.join(stt.results[0])
-            # self.payload.text = stt.results[0]
-            # speech2text = stt.results[0]
-            # return speech2text
-            # return "shit"
+        try:
+            if stt.listening:
+                self.stop_listening()
+                stt.stop()
+                # start_button = self.dictate_btn
+                # start_button.text = 'Speak'
+                # self.payload.text = '\n'.join(stt.partial_results)
+                self.payload.text = '\n'.join(stt.results[0])
+                # self.payload.text = stt.results[0]
+                # speech2text = stt.results[0]
+                # return speech2text
+                # return "shit"
 
-        # start_button = self.ids.dictate_btn
-        # start_button.text = 'Stop'
+            # start_button = self.ids.dictate_btn
+            # start_button.text = 'Stop'
 
-        # self.payload.text
-        # self.ids.results.text =
-        # self.ids.partial.text = ''
+            # self.payload.text
+            # self.ids.results.text =
+            # self.ids.partial.text = ''
 
-        # stt.start()
+            stt.start()
 
-        # Clock.schedule_interval(self.check_state, 1 / 5)
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            self.payload.text = str(exc_type) + ", " + str(fname) + ", " + str(exc_tb.tb_lineno)
+            # Clock.schedule_interval(self.check_state, 1 / 5)
         # self.payload.text = "Fuck you steve"
-
-
-
 
     @staticmethod
     def translate(translator, source, target, text, *args):
@@ -313,12 +322,50 @@ class MainLayout(BoxLayout):
             print(e.args)
             return "No translation is provided"
 
+    def translate_new(self):
+        self.result_label.text = "Fucking enter pressed!!!"
+
+    def _on_key_down(self, window, keycode, text, modifiers):
+        self.result_label.text += f"{keycode}"
+
+
+class MyTextInput(TextInput):
+
+    def __init__(self, *args, **kwargs):
+        self.next = kwargs.pop('next', None)
+        super(MyTextInput, self).__init__(*args, **kwargs)
+
+    def keyboard_on_key_down(self, window, keycode, text, modifiers):
+        if keycode[1] == "enter":
+            # self.next.focus = True
+            # self.next.select_all()
+            # self.get_root_window().translate_new()
+            # self.on_text_validate()
+            self.focus = False
+            # return super(MyTextInput, self).on_text_validate()
+
+            MainLayout.translate_new(MainLayout)
+            # TextInput.get_root_window()..on_text_validate(TextInput)
+            # App.get_running_app().root.translate_new()
+            # App.get_running_app().root.translate( window, keycode, text, modifiers)  # calls your `on_search()` method
+        else:
+            return super(MyTextInput, self).keyboard_on_key_down(window, keycode, text, modifiers)
 
 class TranslatorApp(App):
 
     def build(self):
+        # Window.bind(on_keyboard=self.validate_input)
         return MainLayout()
 
+#     def validate_input(self, window, key, *args, **kwargs):
+#         payload = self.root.ids.payload
+#         if key == 13 and payload.focus: # The exact code-key and only the desired `TextInput` instance.
+# #           textfield.do_undo() # Uncomment if you want to strip out the new line.
+#             payload.focus = False
+#             self.root.translate(self.root.ids.)
+#             # self.root.ids.lbl.text = textfield.text
+# #           textfield.text = "" # Uncomment if you want to make the field empty.
+#             return True
 
 if __name__ == '__main__':
     TranslatorApp().run()
