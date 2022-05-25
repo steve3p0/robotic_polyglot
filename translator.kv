@@ -3,19 +3,43 @@
 #:kivy 1.7.2
 #:import Factory kivy.factory.Factory
 
-#:set color_button (0.09, 0.6, 1, 0.99)
-#:set color_button_pressed (0.09, 0.6, 1, .99)  # darker brown
+#:import utils kivy.utils
+
+# #:set color_button (0.09, 0.6, 1, 0.99)
+#:set color_button (1, 1, 1, 1)
+#:set color_button_pressed (1, 1, 1, 1)
+# (0.09, 0.6, 1, .99)  # darker brown
 #:set color_font   (1, 1, 1, 1)  # off white
 
 <MySpinnerOption@SpinnerOption>:
-    background_color: color_button if self.state == 'down' else color_button_pressed
-    color: color_font
+    # background_color: color_button if self.state == 'down' else color_button_pressed
+    # background_color: (1, 1, 1, 1)
+    color: utils.get_color_from_hex('#FFFFFF') # color_font
     spacing: 10
+
+#<NewButton>:
+#    background_color: 0,0,0,0
+#    canvas:
+#        Rectangle:
+#            size: (40,40) # choose a value of a which fit the most with your button
+#            pos: (self.pos[0]+self.size[0]/2.0) - 20, (self.pos[1]+self.size[1]/2.0) - 20
+#            source: root.image_path
+#    on_press: self.background_color = (1,1,1,1)
+#    on_release: self.background_color = (0,0,0,0)
+
 
 <MainLayout>
     spacing: 15
     orientation: 'vertical'
     padding: 20
+
+    head_spinner: head_spinner
+    payload: payload
+    from_spinner: from_spinner
+    dictate_btn: dictate_btn
+    to_spinner: to_spinner
+    result_label: result_label
+
 #    on_key_up: root._key_up(*args)
     Spinner:
         id: head_spinner
@@ -36,8 +60,8 @@
         multiline: False
         size_hint: 1., .20
         font_size: dp(30)
-        background_color: 0.14, 0.14, 0.14, 1
-        foreground_color: (1, 1, 1, 1)
+        background_color: (.75, .75, .78, 1)
+        foreground_color: (0, 0, 0, 1)
         on_text_validate: result_label.text = root.translate(translator=head_spinner.text, source=from_spinner.text, target=to_spinner.text, text=payload.text)
     BoxLayout:
         spacing: 5
@@ -54,12 +78,37 @@
             option_cls: Factory.get("MySpinnerOption")
         Button:
             id: dictate_btn
-            text: 'Speak'
+#            text: 'Speak'
+
+            #size_hint_y: None
+            #pos_hint={x:1, "top":1}
+            #pos_hint=(1)
+            allow_stretch: False
+            background_normal: 'images/mic_black.png'
+            background_down: 'images/microphone_red2.png'
+
             # background_color: 0, 0, 1, .7
-            background_color: color_button if self.state == 'normal' else color_button_pressed
-            color: color_font
-            font_size: dp(20)
+
+#
+##            size: (200, 200)
+##            size_hint: (None, None)
+##            background_color: color_button if self.state == 'normal' else color_button_pressed
+##            foreground_color: (0, 0, 0, 1)
+##            color: color_font
+#            font_size: dp(20)
             on_release: payload.text = root.dictate(language=from_spinner.text)
+            # on_release: root.dictate(self=dictate_btn, language=from_spinner.text)
+
+#        NewButton:
+#            background_color: 0,0,0,0
+#            canvas:
+#                Rectangle:
+#                    size: (40,40) # choose a value of a which fit the most with your button
+#                    pos: (self.pos[0]+self.size[0]/2.0) - 20, (self.pos[1]+self.size[1]/2.0) - 20
+#                    source: root.image_path
+#            on_press: self.background_color = (1,1,1,1)
+#            on_release: self.background_color = (0,0,0,0)
+
         Spinner:
             id: to_spinner
             text: 'Spanish'
@@ -73,10 +122,14 @@
     ScrollView:
         Label:
             id: result_label
+            background_color: (.75, .75, .78, 1)
+            color: 0,0,0,1
+            #foreground_color: (0, 0, 0, 1)
             font_size: dp(50)
             pos_hint_x: 0.3
             size_hint_y: None
             height: self.texture_size[1]
             text_size: self.width, None
             font_name: 'arial-unicode-ms.ttf' # 'arial'
-            background_color: color_button
+            # background_color: color_button
+

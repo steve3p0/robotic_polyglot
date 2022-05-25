@@ -1,10 +1,13 @@
 from kivy.app import App
+from kivy.core.window import Window
+from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
-# from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty
 # from android.permissions import request_permissions, Permission
 
 from deep_translator import GoogleTranslator, PonsTranslator, LingueeTranslator, MyMemoryTranslator
 
+Window.clearcolor = (1, 1, 1, 1)
 
 import requests
 import json
@@ -12,7 +15,6 @@ import json
 from plyer import stt
 
 __version__ = "0.1.9"
-
 
 # Detect Source Language
 # http://mt.roboticpolyglot.com/detect?input='This is English'
@@ -144,6 +146,12 @@ class MainLayout(BoxLayout):
 
     auto_inserted = False
     # dictate_btn = ObjectProperty()
+    head_spinner = ObjectProperty(None)
+    payload = ObjectProperty(None)
+    from_spinner = ObjectProperty(None)
+    dictate_btn = ObjectProperty(None)
+    to_spinner = ObjectProperty(None)
+    result_label = ObjectProperty(None)
 
     @staticmethod
     def get_supported_languages(translator='Robotic Polyglot', source='all', auto_included=False, *args):
@@ -183,32 +191,71 @@ class MainLayout(BoxLayout):
                 name = dic['Name']
                 supported_languages.append(name)
 
-            supported_languages
+            # supported_languages
         else:
             return ""
             # raise Exception("You need to choose a translator")
 
         return supported_languages
 
-    @staticmethod
-    def dictate(language, *args):
-        import speech_recognition as sr
-        r = sr.Recognizer()
-        with sr.Microphone() as source:
-            # wait for a second to let the recognizer
-            # adjust the energy threshold based on
-            # the surrounding noise level
-            r.adjust_for_ambient_noise(source, duration=0.2)
+    # @staticmethod
+    # def dictate(language, *args):
+    #     import speech_recognition as sr
+    #     r = sr.Recognizer()
+    #     with sr.Microphone() as source:
+    #         # wait for a second to let the recognizer
+    #         # adjust the energy threshold based on
+    #         # the surrounding noise level
+    #         r.adjust_for_ambient_noise(source, duration=0.2)
+    #
+    #         # listens for the user's input
+    #         audio = r.listen(source)
+    #
+    #         # Using google to recognize audio
+    #         text = r.recognize_google(audio)
+    #         # text = text.lower()
+    #         # print("Did you say " + text)
+    #
+    #         return text
 
-            # listens for the user's input
-            audio = r.listen(source)
+    # @staticmethod
+    # def dictate(language, *args):
+    def dictate(self, language, *args):
 
-            # Using google to recognize audio
-            text = r.recognize_google(audio)
-            # text = text.lower()
-            # print("Did you say " + text)
+        try:
+            self.payload.text = "Fuck you steve"
+        except Exception as ex:
+            return ex
 
-            return text
+        return "returned!!!!"
+        # return "shit"
+
+        # if stt.listening:
+            #self.stop_listening()
+            # stt.stop()
+            # start_button = self.dictate_btn
+            # start_button.text = 'Speak'
+            # self.payload.text = '\n'.join(stt.partial_results)
+            # self.payload.text = '\n'.join(stt.results[0])
+            # self.payload.text = stt.results[0]
+            # speech2text = stt.results[0]
+            # return speech2text
+            # return "shit"
+
+        # start_button = self.ids.dictate_btn
+        # start_button.text = 'Stop'
+
+        # self.payload.text
+        # self.ids.results.text =
+        # self.ids.partial.text = ''
+
+        # stt.start()
+
+        # Clock.schedule_interval(self.check_state, 1 / 5)
+        self.payload.text = "Fuck you steve"
+
+
+
 
     @staticmethod
     def translate(translator, source, target, text, *args):
