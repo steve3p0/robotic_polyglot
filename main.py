@@ -262,69 +262,10 @@ class MainLayout(BoxLayout):
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            self.payload.text = str(exc_type) + ", " + str(fname) + ", " + str(exc_tb.tb_lineno)
+            self.result_label.text = str(exc_type) + ", " + str(fname) + ", " + str(exc_tb.tb_lineno)
             # Clock.schedule_interval(self.check_state, 1 / 5)
-        # self.payload.text = "Fuck you steve"
-
-    @staticmethod
-    def translate(translator, source, target, text, *args):
-
-        source = source.lower()
-        target = target.lower()
-
-        if not text:
-            return 'provide a text to translate'
-
-        try:
-            if translator == 'Google Translate':
-                res = GoogleTranslator(source=source, target=target).translate(text=text)
-                # if target == 'arabic':
-                #     res = get_display(arabic_reshaper.reshape(res))
-
-            elif translator == 'My Memory':
-                res = MyMemoryTranslator(source=source, target=target).translate(text=text)
-                # if target == 'arabic':
-                #     res = get_display(arabic_reshaper.reshape(res))
-
-            elif translator == 'Pons':
-                res = PonsTranslator(source=source, target=target).translate(word=text)
-                # if target == 'arabic':
-                #     res = get_display(arabic_reshaper.reshape(res))
-
-            elif translator == 'Linguee':
-                res = LingueeTranslator(source=source, target=target).translate(word=text)
-
-            elif translator == 'Robotic Polyglot':
-                # res = RoboticPolyglot(source=source, target=target).translate(input=text)
-                # http://mt.roboticpolyglot.com/translate?source=en&target=fr&input='I am a robot that speaks many languages'
-
-                src_lang = LANGUAGE_LANGS_CODES[source]
-                if target == 'chinese':
-                    tgt_lang = 'zh'
-                else:
-                    tgt_lang = LANGUAGE_LANGS_CODES[target]
-                url = "http://mt.roboticpolyglot.com/translate"
-                params = {}
-                params['source'] = src_lang
-                params['target'] = tgt_lang
-                params['input'] = text
-                res = requests.get(url=url, params=params).text
-
-            else:
-                return "you need to choose a translator"
-
-            # return "No translation is provided" if not res else res
-            if not res:
-                "No translation is provided"
-            else:
-                return res
-        except Exception as e:
-            print(e.args)
-            return "No translation is provided"
 
     def translate_new(self):
-        #self.result_label.text = "Fucking enter pressed!!!"
-
         source = self.from_spinner.text.lower()
         target = self.to_spinner.text.lower()
 
@@ -368,6 +309,7 @@ class MainLayout(BoxLayout):
 
             else:
                 self.result_label.text = "you need to choose a translator"
+                return
 
             # return "No translation is provided" if not res else res
             if not res:

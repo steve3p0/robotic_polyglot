@@ -62,18 +62,20 @@
     WrappedTextInput:
         id: payload
         rootpar: root
+        size_hint_y: None
+        height: 100
         hint_text: "Text..."
         focus: True
         use_bubble: True
         do_wrap: True
         multiline: True
-        size_hint: 1., .20
+        # size_hint: 1., .20
         font_size: dp(30)
         background_color: (.75, .75, .78, 1)
         foreground_color: (0, 0, 0, 1)
         # keyboard_on_key_down: root._on_key_down
         # keyboard_on_key_down: root.translate_new()
-        on_text_validate: root.translate(translator=head_spinner.text, source=from_spinner.text, target=to_spinner.text, text=payload.text)
+        # on_text_validate: root.translate(translator=head_spinner.text, source=from_spinner.text, target=to_spinner.text, text=payload.text)
     BoxLayout:
         spacing: 5
         size_hint: 1., .15
@@ -90,7 +92,8 @@
         Button:
             id: dictate_btn
 #            text: 'Speak'
-
+            size_hint_x: None
+            width: 100
             #size_hint_y: None
             #pos_hint={x:1, "top":1}
             #pos_hint=(1)
