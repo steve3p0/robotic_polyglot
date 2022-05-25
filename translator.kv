@@ -34,6 +34,16 @@
     text_validate_unfocus: False
     cursor_color: 0, 0, 0, 1
 
+<NewButton@Button>:
+    background_color: 0,0,0,0
+    canvas:
+        Rectangle:
+            size: 40,40 # choose a value of a which fit the most with your button
+            pos: (self.pos[0]+self.size[0]/2.0) - 40/2.0, (self.pos[1]+self.size[1]/2.0) - 40/2.0
+            source: 'images/microphone_black1.png'
+    on_press: self.background_color = (1,1,1,1)
+    on_release: self.background_color = (0,0,0,0)
+
 
 <MainLayout>
     spacing: 15
@@ -47,7 +57,6 @@
     to_spinner: to_spinner
     result_label: result_label
 
-#    on_key_up: root._key_up(*args)
     Spinner:
         id: head_spinner
         text: 'Robotic Polyglot'
@@ -57,7 +66,6 @@
         color: color_font
         font_size: dp(30)
         option_cls: Factory.get("MySpinnerOption")
-
 
     WrappedTextInput:
         id: payload
@@ -76,6 +84,7 @@
         # keyboard_on_key_down: root._on_key_down
         # keyboard_on_key_down: root.translate_new()
         # on_text_validate: root.translate(translator=head_spinner.text, source=from_spinner.text, target=to_spinner.text, text=payload.text)
+
     BoxLayout:
         spacing: 5
         size_hint: 1., .15
@@ -89,21 +98,21 @@
             color: color_font
             font_size: dp(20)
             option_cls: Factory.get("MySpinnerOption")
-        Button:
+
+        #Button:
+        NewButton:
             id: dictate_btn
 #            text: 'Speak'
             size_hint_x: None
-            width: 100
+            width: 50
+            # size: (100, 100)
             #size_hint_y: None
             #pos_hint={x:1, "top":1}
             #pos_hint=(1)
             allow_stretch: False
-            background_normal: 'images/mic_black.png'
-            background_down: 'images/microphone_red2.png'
-
+            # background_normal: 'images/entertainment-microphone.png'
+            # background_down: 'images/mic_red.png'
             # background_color: 0, 0, 1, .7
-
-#
 ##            size: (200, 200)
 ##            size_hint: (None, None)
 ##            background_color: color_button if self.state == 'normal' else color_button_pressed
