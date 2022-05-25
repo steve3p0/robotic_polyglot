@@ -28,6 +28,13 @@
 #    on_release: self.background_color = (0,0,0,0)
 
 
+<WrappedTextInput@TextInput>:
+    multiline: True
+    do_wrap: True
+    text_validate_unfocus: False
+    cursor_color: 0, 0, 0, 1
+
+
 <MainLayout>
     spacing: 15
     orientation: 'vertical'
@@ -52,8 +59,9 @@
         option_cls: Factory.get("MySpinnerOption")
 
 
-    MyTextInput:
+    WrappedTextInput:
         id: payload
+        rootpar: root
         hint_text: "Text..."
         focus: True
         use_bubble: True

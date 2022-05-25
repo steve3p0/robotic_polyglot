@@ -329,27 +329,35 @@ class MainLayout(BoxLayout):
         self.result_label.text += f"{keycode}"
 
 
-class MyTextInput(TextInput):
+class WrappedTextInput(TextInput):
 
-    def __init__(self, *args, **kwargs):
-        self.next = kwargs.pop('next', None)
-        super(MyTextInput, self).__init__(*args, **kwargs)
+    rootpar = ObjectProperty(None)
 
     def keyboard_on_key_down(self, window, keycode, text, modifiers):
-        if keycode[1] == "enter":
-            # self.next.focus = True
-            # self.next.select_all()
-            # self.get_root_window().translate_new()
-            # self.on_text_validate()
-            self.focus = False
-            # return super(MyTextInput, self).on_text_validate()
-
-            MainLayout.translate_new(MainLayout)
-            # TextInput.get_root_window()..on_text_validate(TextInput)
-            # App.get_running_app().root.translate_new()
-            # App.get_running_app().root.translate( window, keycode, text, modifiers)  # calls your `on_search()` method
+        if keycode[1] == 'enter':
+            self.rootpar.translate_new()
         else:
-            return super(MyTextInput, self).keyboard_on_key_down(window, keycode, text, modifiers)
+            super().keyboard_on_key_down(window, keycode, text, modifiers)
+
+    # def __init__(self, *args, **kwargs):
+    #     self.next = kwargs.pop('next', None)
+    #     super(MyTextInput, self).__init__(*args, **kwargs)
+
+    # def keyboard_on_key_down(self, window, keycode, text, modifiers):
+    #     if keycode[1] == "enter":
+    #         # self.next.focus = True
+    #         # self.next.select_all()
+    #         # self.get_root_window().translate_new()
+    #         # self.on_text_validate()
+    #         self.focus = False
+    #         # return super(MyTextInput, self).on_text_validate()
+    #
+    #         MainLayout.translate_new(MainLayout)
+    #         # TextInput.get_root_window()..on_text_validate(TextInput)
+    #         # App.get_running_app().root.translate_new()
+    #         # App.get_running_app().root.translate( window, keycode, text, modifiers)  # calls your `on_search()` method
+    #     else:
+    #         return super(MyTextInput, self).keyboard_on_key_down(window, keycode, text, modifiers)
 
 class TranslatorApp(App):
 
