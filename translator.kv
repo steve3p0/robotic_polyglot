@@ -64,7 +64,7 @@
 #        height: 200
         size_hint: 1., .30
 
-        hint_text: "Text..."
+        hint_text: "Type something here..."
         focus: True
         use_bubble: True
         do_wrap: True
@@ -115,16 +115,6 @@
 #            font_size: dp(20)
             # on_release: payload.text = root.dictate(language=from_spinner.text)
             on_release: root.dictate(language=from_spinner.text)
-
-#        NewButton:
-#            background_color: 0,0,0,0
-#            canvas:
-#                Rectangle:
-#                    size: (40,40) # choose a value of a which fit the most with your button
-#                    pos: (self.pos[0]+self.size[0]/2.0) - 20, (self.pos[1]+self.size[1]/2.0) - 20
-#                    source: root.image_path
-#            on_press: self.background_color = (1,1,1,1)
-#            on_release: self.background_color = (0,0,0,0)
 
         Spinner:
             id: to_spinner

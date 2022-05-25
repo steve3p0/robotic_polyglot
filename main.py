@@ -4,7 +4,8 @@ from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
 from kivy.properties import ObjectProperty
-# from android.permissions import request_permissions, Permission
+from kivy.clock import Clock
+#from android.permissions import request_permissions, Permission
 
 import sys, os
 
@@ -229,11 +230,17 @@ class MainLayout(BoxLayout):
     # def dictate(language, *args):
     def dictate(self, language, *args):
 
+        self.result_label.text += "Inside dictate\n"
+
         try:
             if stt.listening:
+
+                self.result_label.text += "Inside try (if listening):\n"
+
                 self.dictate_btn.background_color = [0, 0, 0, 1]
                 self.stop_listening()
                 stt.stop()
+                self.result_label.text += "Stop Listening"
                 # start_button = self.dictate_btn
                 # start_button.text = 'Speak'
                 # self.payload.text = '\n'.join(stt.partial_results)
@@ -251,8 +258,10 @@ class MainLayout(BoxLayout):
             # self.ids.results.text =
             # self.ids.partial.text = ''
 
+            self.result_label.text += "\n\tBefore start Listening"
             self.dictate_btn.background_color = [255, 0, 0, 1]
             stt.start()
+            self.result_label.text += "\n\tAfter Stop Listening"
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -333,6 +342,8 @@ class WrappedTextInput(TextInput):
 
 
 class TranslatorApp(App):
+
+    # request_permissions([Permission.RECORD_AUDIO])
 
     def build(self):
         # Window.bind(on_keyboard=self.validate_input)
