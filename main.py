@@ -323,7 +323,62 @@ class MainLayout(BoxLayout):
             return "No translation is provided"
 
     def translate_new(self):
-        self.result_label.text = "Fucking enter pressed!!!"
+        #self.result_label.text = "Fucking enter pressed!!!"
+
+        source = self.from_spinner.text.lower()
+        target = self.to_spinner.text.lower()
+
+        if not self.payload.text:
+            self.result_label.text = 'provide a text to translate'
+
+        try:
+            if self.head_spinner.text == 'Google Translate':
+                res = GoogleTranslator(source=source, target=target).translate(text=text)
+                # if target == 'arabic':
+                #     res = get_display(arabic_reshaper.reshape(res))
+
+            elif self.head_spinner.text == 'My Memory':
+                res = MyMemoryTranslator(source=source, target=target).translate(text=text)
+                # if target == 'arabic':
+                #     res = get_display(arabic_reshaper.reshape(res))
+
+            elif self.head_spinner.text == 'Pons':
+                res = PonsTranslator(source=source, target=target).translate(word=text)
+                # if target == 'arabic':
+                #     res = get_display(arabic_reshaper.reshape(res))
+
+            elif self.head_spinner.text == 'Linguee':
+                res = LingueeTranslator(source=source, target=target).translate(word=text)
+
+            elif self.head_spinner.text == 'Robotic Polyglot':
+                # res = RoboticPolyglot(source=source, target=target).translate(input=text)
+                # http://mt.roboticpolyglot.com/translate?source=en&target=fr&input='I am a robot that speaks many languages'
+
+                src_lang = LANGUAGE_LANGS_CODES[source]
+                if target == 'chinese':
+                    tgt_lang = 'zh'
+                else:
+                    tgt_lang = LANGUAGE_LANGS_CODES[target]
+                url = "http://mt.roboticpolyglot.com/translate"
+                params = {}
+                params['source'] = src_lang
+                params['target'] = tgt_lang
+                params['input'] = self.payload.text
+                res = requests.get(url=url, params=params).text
+
+            else:
+                self.result_label.text = "you need to choose a translator"
+
+            # return "No translation is provided" if not res else res
+            if not res:
+                res = "No translation is provided"
+
+            self.result_label.text = res
+        except Exception as e:
+            print(e.args)
+            self.result_label.text = e.args
+            # return "No translation is provided"
+
 
     def _on_key_down(self, window, keycode, text, modifiers):
         self.result_label.text += f"{keycode}"
