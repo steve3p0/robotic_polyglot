@@ -17,17 +17,6 @@
     color: utils.get_color_from_hex('#FFFFFF') # color_font
     spacing: 10
 
-#<NewButton>:
-#    background_color: 0,0,0,0
-#    canvas:
-#        Rectangle:
-#            size: (40,40) # choose a value of a which fit the most with your button
-#            pos: (self.pos[0]+self.size[0]/2.0) - 20, (self.pos[1]+self.size[1]/2.0) - 20
-#            source: root.image_path
-#    on_press: self.background_color = (1,1,1,1)
-#    on_release: self.background_color = (0,0,0,0)
-
-
 <WrappedTextInput@TextInput>:
     multiline: True
     do_wrap: True
@@ -38,9 +27,9 @@
     background_color: 0,0,0,0
     canvas:
         Rectangle:
-            size: 40,40 # choose a value of a which fit the most with your button
-            pos: (self.pos[0]+self.size[0]/2.0) - 40/2.0, (self.pos[1]+self.size[1]/2.0) - 40/2.0
-            source: 'images/microphone_black1.png'
+            size: 80,80 # choose a value of a which fit the most with your button
+            pos: (self.pos[0]+self.size[0]/2.0) - 80/2.0, (self.pos[1]+self.size[1]/2.0) - 80/2.0
+            source: 'images/45-458757_mic-icon-windows-10-microphone-icon.png'
     on_press: self.background_color = (1,1,1,1)
     on_release: self.background_color = (0,0,0,0)
 
@@ -154,7 +143,7 @@
             background_color: (.75, .75, .78, 1)
             color: 0,0,0,1
             #foreground_color: (0, 0, 0, 1)
-            font_size: dp(50)
+            font_size: dp(40)
             pos_hint_x: 0.3
             size_hint_y: None
             height: self.texture_size[1]
