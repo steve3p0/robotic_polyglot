@@ -227,7 +227,7 @@ class MainLayout(BoxLayout):
         except Exception as ex:
             return ex
 
-        return "returned!!!!"
+        #return "returned!!!!"
         # return "shit"
 
         # if stt.listening:
@@ -252,7 +252,7 @@ class MainLayout(BoxLayout):
         # stt.start()
 
         # Clock.schedule_interval(self.check_state, 1 / 5)
-        self.payload.text = "Fuck you steve"
+        # self.payload.text = "Fuck you steve"
 
 
 

@@ -62,7 +62,7 @@
         font_size: dp(30)
         background_color: (.75, .75, .78, 1)
         foreground_color: (0, 0, 0, 1)
-        on_text_validate: result_label.text = root.translate(translator=head_spinner.text, source=from_spinner.text, target=to_spinner.text, text=payload.text)
+        on_text_validate: root.translate(translator=head_spinner.text, source=from_spinner.text, target=to_spinner.text, text=payload.text)
     BoxLayout:
         spacing: 5
         size_hint: 1., .15
@@ -96,8 +96,8 @@
 ##            foreground_color: (0, 0, 0, 1)
 ##            color: color_font
 #            font_size: dp(20)
-            on_release: payload.text = root.dictate(language=from_spinner.text)
-            # on_release: root.dictate(self=dictate_btn, language=from_spinner.text)
+            # on_release: payload.text = root.dictate(language=from_spinner.text)
+            on_release: root.dictate(language=from_spinner.text)
 
 #        NewButton:
 #            background_color: 0,0,0,0
