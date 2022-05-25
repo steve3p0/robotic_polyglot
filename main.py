@@ -17,7 +17,7 @@ import json
 
 from plyer import stt
 
-__version__ = "0.1.9"
+__version__ = "0.1.10"
 
 # Detect Source Language
 # http://mt.roboticpolyglot.com/detect?input='This is English'
@@ -229,16 +229,9 @@ class MainLayout(BoxLayout):
     # def dictate(language, *args):
     def dictate(self, language, *args):
 
-        # try:
-        #     self.payload.text = "Fuck you steve"
-        # except Exception as ex:
-        #     return ex
-
-        #return "returned!!!!"
-        # return "shit"
-
         try:
             if stt.listening:
+                self.dictate_btn.background_color = [0, 0, 0, 1]
                 self.stop_listening()
                 stt.stop()
                 # start_button = self.dictate_btn
@@ -249,6 +242,7 @@ class MainLayout(BoxLayout):
                 # speech2text = stt.results[0]
                 # return speech2text
                 # return "shit"
+                return
 
             # start_button = self.ids.dictate_btn
             # start_button.text = 'Stop'
@@ -257,6 +251,7 @@ class MainLayout(BoxLayout):
             # self.ids.results.text =
             # self.ids.partial.text = ''
 
+            self.dictate_btn.background_color = [255, 0, 0, 1]
             stt.start()
 
         except Exception as ex:
@@ -265,61 +260,61 @@ class MainLayout(BoxLayout):
             self.result_label.text = str(exc_type) + ", " + str(fname) + ", " + str(exc_tb.tb_lineno)
             # Clock.schedule_interval(self.check_state, 1 / 5)
 
-    def translate_new(self):
+    def translate(self):
         source = self.from_spinner.text.lower()
         target = self.to_spinner.text.lower()
+        text = self.payload.text
 
-        if not self.payload.text:
+        if text.strip() == '':
             self.result_label.text = 'provide a text to translate'
+        else:
+            try:
+                if self.head_spinner.text == 'Google Translate':
+                    res = GoogleTranslator(source=source, target=target).translate(text=text)
+                    # if target == 'arabic':
+                    #     res = get_display(arabic_reshaper.reshape(res))
 
-        try:
-            if self.head_spinner.text == 'Google Translate':
-                res = GoogleTranslator(source=source, target=target).translate(text=text)
-                # if target == 'arabic':
-                #     res = get_display(arabic_reshaper.reshape(res))
+                elif self.head_spinner.text == 'My Memory':
+                    res = MyMemoryTranslator(source=source, target=target).translate(text=text)
+                    # if target == 'arabic':
+                    #     res = get_display(arabic_reshaper.reshape(res))
 
-            elif self.head_spinner.text == 'My Memory':
-                res = MyMemoryTranslator(source=source, target=target).translate(text=text)
-                # if target == 'arabic':
-                #     res = get_display(arabic_reshaper.reshape(res))
+                elif self.head_spinner.text == 'Pons':
+                    res = PonsTranslator(source=source, target=target).translate(word=text)
+                    # if target == 'arabic':
+                    #     res = get_display(arabic_reshaper.reshape(res))
 
-            elif self.head_spinner.text == 'Pons':
-                res = PonsTranslator(source=source, target=target).translate(word=text)
-                # if target == 'arabic':
-                #     res = get_display(arabic_reshaper.reshape(res))
+                elif self.head_spinner.text == 'Linguee':
+                    res = LingueeTranslator(source=source, target=target).translate(word=text)
 
-            elif self.head_spinner.text == 'Linguee':
-                res = LingueeTranslator(source=source, target=target).translate(word=text)
+                elif self.head_spinner.text == 'Robotic Polyglot':
+                    # res = RoboticPolyglot(source=source, target=target).translate(input=text)
+                    # http://mt.roboticpolyglot.com/translate?source=en&target=fr&input='I am a robot that speaks many languages'
 
-            elif self.head_spinner.text == 'Robotic Polyglot':
-                # res = RoboticPolyglot(source=source, target=target).translate(input=text)
-                # http://mt.roboticpolyglot.com/translate?source=en&target=fr&input='I am a robot that speaks many languages'
+                    src_lang = LANGUAGE_LANGS_CODES[source]
+                    if target == 'chinese':
+                        tgt_lang = 'zh'
+                    else:
+                        tgt_lang = LANGUAGE_LANGS_CODES[target]
+                    url = "http://mt.roboticpolyglot.com/translate"
+                    params = {}
+                    params['source'] = src_lang
+                    params['target'] = tgt_lang
+                    params['input'] = text
+                    res = requests.get(url=url, params=params).text
 
-                src_lang = LANGUAGE_LANGS_CODES[source]
-                if target == 'chinese':
-                    tgt_lang = 'zh'
                 else:
-                    tgt_lang = LANGUAGE_LANGS_CODES[target]
-                url = "http://mt.roboticpolyglot.com/translate"
-                params = {}
-                params['source'] = src_lang
-                params['target'] = tgt_lang
-                params['input'] = self.payload.text
-                res = requests.get(url=url, params=params).text
+                    self.result_label.text = "you need to choose a translator"
+                    return
 
-            else:
-                self.result_label.text = "you need to choose a translator"
-                return
+                # return "No translation is provided" if not res else res
+                if not res:
+                    res = "No translation is provided"
 
-            # return "No translation is provided" if not res else res
-            if not res:
-                res = "No translation is provided"
-
-            self.result_label.text = res
-        except Exception as e:
-            print(e.args)
-            self.result_label.text = e.args
-            # return "No translation is provided"
+                self.result_label.text = res
+            except Exception as e:
+                print(e.args)
+                self.result_label.text = e.args
 
 
     def _on_key_down(self, window, keycode, text, modifiers):
@@ -332,29 +327,10 @@ class WrappedTextInput(TextInput):
 
     def keyboard_on_key_down(self, window, keycode, text, modifiers):
         if keycode[1] == 'enter':
-            self.rootpar.translate_new()
+            self.rootpar.translate()
         else:
             super().keyboard_on_key_down(window, keycode, text, modifiers)
 
-    # def __init__(self, *args, **kwargs):
-    #     self.next = kwargs.pop('next', None)
-    #     super(MyTextInput, self).__init__(*args, **kwargs)
-
-    # def keyboard_on_key_down(self, window, keycode, text, modifiers):
-    #     if keycode[1] == "enter":
-    #         # self.next.focus = True
-    #         # self.next.select_all()
-    #         # self.get_root_window().translate_new()
-    #         # self.on_text_validate()
-    #         self.focus = False
-    #         # return super(MyTextInput, self).on_text_validate()
-    #
-    #         MainLayout.translate_new(MainLayout)
-    #         # TextInput.get_root_window()..on_text_validate(TextInput)
-    #         # App.get_running_app().root.translate_new()
-    #         # App.get_running_app().root.translate( window, keycode, text, modifiers)  # calls your `on_search()` method
-    #     else:
-    #         return super(MyTextInput, self).keyboard_on_key_down(window, keycode, text, modifiers)
 
 class TranslatorApp(App):
 
@@ -362,15 +338,6 @@ class TranslatorApp(App):
         # Window.bind(on_keyboard=self.validate_input)
         return MainLayout()
 
-#     def validate_input(self, window, key, *args, **kwargs):
-#         payload = self.root.ids.payload
-#         if key == 13 and payload.focus: # The exact code-key and only the desired `TextInput` instance.
-# #           textfield.do_undo() # Uncomment if you want to strip out the new line.
-#             payload.focus = False
-#             self.root.translate(self.root.ids.)
-#             # self.root.ids.lbl.text = textfield.text
-# #           textfield.text = "" # Uncomment if you want to make the field empty.
-#             return True
 
 if __name__ == '__main__':
     TranslatorApp().run()

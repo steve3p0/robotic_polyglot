@@ -61,17 +61,20 @@
         id: head_spinner
         text: 'Robotic Polyglot'
         values: 'Robotic Polyglot', 'Google Translate', 'My Memory', 'Pons', 'Linguee'
-        size_hint: 1., .20
+        size_hint: 1., .10
         background_color: color_button if self.state == 'normal' else color_button_pressed
         color: color_font
-        font_size: dp(30)
+        font_size: dp(20)
         option_cls: Factory.get("MySpinnerOption")
 
     WrappedTextInput:
         id: payload
         rootpar: root
-        size_hint_y: None
-        height: 100
+
+#        size_hint_y: None
+#        height: 200
+        size_hint: 1., .30
+
         hint_text: "Text..."
         focus: True
         use_bubble: True
@@ -87,9 +90,10 @@
 
     BoxLayout:
         spacing: 5
-        size_hint: 1., .15
+        size_hint: 1., .10
         Spinner:
             id: from_spinner
+            size_hint_x: 40
             text: 'English'
             # text: 'auto' if head_spinner.text in ['Google Translate', 'My Memory'] else 'french'
             values: root.get_supported_languages(translator=head_spinner.text, source="all", auto_included=True)
@@ -102,9 +106,10 @@
         #Button:
         NewButton:
             id: dictate_btn
+            size_hint_x: 20
 #            text: 'Speak'
-            size_hint_x: None
-            width: 50
+#            size_hint_x: None
+            width: 20
             # size: (100, 100)
             #size_hint_y: None
             #pos_hint={x:1, "top":1}
@@ -134,6 +139,7 @@
 
         Spinner:
             id: to_spinner
+            size_hint_x: 40
             text: 'Spanish'
             values: root.get_supported_languages(translator=head_spinner.text, source=from_spinner.text)
             # background_color: 0, 0, 1, .7
